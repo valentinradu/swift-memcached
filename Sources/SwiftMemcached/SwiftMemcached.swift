@@ -21,7 +21,7 @@ public struct MemcachedOptions {
     /// Enables compression.
     public let enableCompression: Bool
     /// Sets logger verbosity
-    public let verbosity:
+    public let verbosity: MemcachedVerbosity
 }
 
 /// The `MemcachedConnection` manages the connection with a single server and sends commands to it.
