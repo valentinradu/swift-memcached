@@ -1,18 +1,18 @@
 import Foundation
 
-/// Errors related to the session.
+/// Errors related to the connection.
 public enum MemcachedConnectionError: Error {
     /// The unstructured data received from the server is could not be decoded.
     /// This usually happens when trying to fetch the wrong type for a key.
     case failedToDecodeUnstructuredDataForKey(String)
-    // TODO: Add other errors related to the session here
+    // TODO: Add other errors related to the connection here
 }
 
 public enum MemcachedVerbosity {
     case errorsOnly
 }
 
-/// Options can be set per session and later overriden per command.
+/// Options can be set per connection and later overriden per command.
 public struct MemcachedOptions {
     /// The amount of time before timeouting a command.
     public let timeout: TimeInterval
@@ -21,12 +21,12 @@ public struct MemcachedOptions {
     /// Enables compression.
     public let enableCompression: Bool
     /// Sets logger verbosity
-    public let verbosity: MemcachedVerbosity
+    public let verbosity:
 }
 
 /// The `MemcachedConnection` manages the connection with a single server and sends commands to it.
 public actor MemcachedConnection {
-    /// Initializes the session from a server URL.
+    /// Initializes the connection from a server URL.
     /// - Note: The initializer itself **does not** connect to the server.
     /// We lazily connect to the server during the first request we make.
     /// - Parameters:
@@ -66,9 +66,9 @@ public struct MemcachedPipeline {
     }
 
     /// Flushes the pipeline and sends all commands to the server.
-    /// - Parameter session: The session used to connect to the server
+    /// - Parameter connection: The connection used to connect to the server
     /// - Throws: It can throw if the commands sending failed. Will not wait for the response and **will not throw** if the response fail.
-    public func flush(using session: MemcachedConnection) async throws {}
+    public func flush(using connection: MemcachedConnection) async throws {}
 }
 
 /// A server command.
@@ -90,7 +90,7 @@ public extension MemcachedCommand {
     /// Fetch a value by key
     /// - Parameters:
     ///   - key: The key
-    ///   - options: Overrides the session options per command
+    ///   - options: Overrides the connection options per command
     ///   - of: The expected type of the stored value
     /// - Returns: A `MemcachedCommand` command
     static func get<Value>(key: String, of: Value.Type,
@@ -103,7 +103,7 @@ public extension MemcachedCommand {
     /// Set a value by key
     /// - Parameters:
     ///   - key: The key
-    ///   - options: Overrides the session options per command
+    ///   - options: Overrides the connection options per command
     ///   - value: The value
     /// - Returns: A `MemcachedCommand` command
     static func set<Value>(key: String, value: Value,
@@ -116,7 +116,7 @@ public extension MemcachedCommand {
     /// Delete a value by key
     /// - Parameters:
     ///   - key: The key
-    ///   - options: Overrides the session options per command
+    ///   - options: Overrides the connection options per command
     /// - Returns: A `MemcachedCommand` command
     static func delete(key: String,
                        options: MemcachedOptions? = nil) -> MemcachedCommand<Bool> {
