@@ -8,6 +8,10 @@ public enum MemcachedConnectionError: Error {
     // TODO: Add other errors related to the session here
 }
 
+public enum MemcachedVerbosity {
+    case errorsOnly
+}
+
 /// Options can be set per session and later overriden per command.
 public struct MemcachedOptions {
     /// The amount of time before timeouting a command.
@@ -16,6 +20,8 @@ public struct MemcachedOptions {
     public let retries: TimeInterval
     /// Enables compression.
     public let enableCompression: Bool
+    /// Sets logger verbosity
+    public let verbosity: MemcachedVerbosity
 }
 
 /// The `MemcachedConnection` manages the connection with a single server and sends commands to it.
