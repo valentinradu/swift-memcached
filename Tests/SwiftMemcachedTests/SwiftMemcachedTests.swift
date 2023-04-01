@@ -10,11 +10,11 @@ final class SwiftMemcachedTests: XCTestCase {
         let url = URL(string: "localhost:2020")!
         let session = MemcachedConnection(url: url)
 
-        // Alternatively
+        // Alternatively, with options
         // let options = MemcachedOptions(timeout: 10, retries: 3, enableCompression: true)
         // let session = MemcachedConnection(url: url, options: options)
 
-        // Once you have the a sesion, you can use shorthands for most common cases
+        // Once you have the a connection, you can send commands
         let user = try await session.perform(.get(key: "user1", of: User.self))
         try await session.perform(.set(key: "user1", value: user))
         try await session.perform(.delete(key: "user1"))
