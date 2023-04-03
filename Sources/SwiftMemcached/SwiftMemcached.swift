@@ -60,8 +60,8 @@ public actor MemcachedConnection {
 public struct MemcachedPipeline {
     /// Enqueues a command on the pipeline
     /// - Parameter command: The command to enqueue
-    /// - Returns: The enqueued command
-    public mutating func enqueue<Result>(_ command: MemcachedCommand<Result>) -> MemcachedCommand<Result> {
+    /// - Returns: A task that will resolve to the result or error out
+    public mutating func enqueue<Result>(_ command: MemcachedCommand<Result>) -> Task<Result, Error> {
         fatalError()
     }
 
@@ -76,14 +76,6 @@ public actor MemcachedCommand<Result> {
     fileprivate func perform(using: MemcachedConnection) async throws -> Result {
         fatalError()
     }
-
-    /// Awaits for the command's result.
-    /// - Returns: The result
-    /// - Throws: Can throw when the command failed
-    public func result() async throws -> Result {
-        // TODO: Implement this
-        fatalError()
-    }
 }
 
 public extension MemcachedCommand {
@@ -91,11 +83,8 @@ public extension MemcachedCommand {
     /// - Parameters:
     ///   - key: The key
     ///   - options: Overrides the connection options per command
-    ///   - of: The expected type of the stored value
     /// - Returns: A `MemcachedCommand` command
-    static func get<Value>(key: String, of: Value.Type,
-                           options: MemcachedOptions? = nil) -> MemcachedCommand<Value?>
-        where Value: Codable {
+    static func get(key: String, options: MemcachedOptions? = nil) -> MemcachedCommand<Data?> {
         // TODO: Implement this
         fatalError()
     }
@@ -106,9 +95,7 @@ public extension MemcachedCommand {
     ///   - options: Overrides the connection options per command
     ///   - value: The value
     /// - Returns: A `MemcachedCommand` command
-    static func set<Value>(key: String, value: Value,
-                           options: MemcachedOptions? = nil) -> MemcachedCommand<Void>
-        where Value: Codable {
+    static func set(key: String, value: Data, options: MemcachedOptions? = nil) -> MemcachedCommand<Void> {
         // TODO: Implement this
         fatalError()
     }
@@ -118,8 +105,7 @@ public extension MemcachedCommand {
     ///   - key: The key
     ///   - options: Overrides the connection options per command
     /// - Returns: A `MemcachedCommand` command
-    static func delete(key: String,
-                       options: MemcachedOptions? = nil) -> MemcachedCommand<Bool> {
+    static func delete(key: String, options: MemcachedOptions? = nil) -> MemcachedCommand<Bool> {
         // TODO: Implement this
         fatalError()
     }
